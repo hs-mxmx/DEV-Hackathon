@@ -1,0 +1,7 @@
+Fisica
+Matematicas
+BBDD
+EEDD
+SSOO
+Programacion
+Estadisticas

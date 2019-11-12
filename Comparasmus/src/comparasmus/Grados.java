@@ -22,18 +22,20 @@ import java.util.Scanner;
 public class Grados {
     private ArrayList<String>grados = new ArrayList<>();
     private Scanner sc = new Scanner(System.in);
+    private String gradoz;
         
-    public void incluirGrado() throws IOException{
+    public String incluirGrado() throws IOException{
         try{
             System.out.println("[+]Grados Disponibles: ");
             leerGrados();
         }catch(FileNotFoundException ie){}
-        String incluir = sc.nextLine();
         System.out.println("\nIntroduce el nuevo grado: ");
         String grado = sc.nextLine();
         grados.add(grado);
         System.out.println("Grado añadido con éxito. " + "\nGrados disponibles: " + grados);
         guardarGrados(grado);
+        gradoz = grado;
+        return gradoz;
     }
     
     public void guardarGrados(String grado){
@@ -53,13 +55,16 @@ public class Grados {
                 e2.printStackTrace();
             }
         }
-        
-        historial_grados = null;
-        hist_w = null;
+        guardarGradosSeparados(grado);
+    }
+    
+    public void guardarGradosSeparados(String grado){
+        FileWriter historial_grados = null;
+        PrintWriter hist_w = null;
         try{
             historial_grados = new FileWriter("Historiales/grados/"+grado+".txt", true);
             hist_w = new PrintWriter(historial_grados);
-            hist_w.println(grado);
+            //hist_w.println(asignatura_seleccionada);
         }catch(Exception e){
             e.printStackTrace();
         }finally{
@@ -71,7 +76,26 @@ public class Grados {
             }
         }
     }
-    
+   
+    public void guardarAsignaturaGrado(String grado,String asignatura){
+        FileWriter historial_grados = null;
+        PrintWriter hist_w = null;
+        try{
+            historial_grados = new FileWriter("Historiales/grados/"+grado+".txt", true);
+            hist_w = new PrintWriter(historial_grados);
+            hist_w.println(asignatura);
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            try{
+                if (null != historial_grados)
+                    historial_grados.close();
+            }catch(Exception e2){
+                e2.printStackTrace();
+            }
+        }
+    }
+
     public ArrayList<String> leerGrados() throws FileNotFoundException, IOException{
         int contador = 1;
         File file = new File("C:\\Users\\Daniel\\Documents\\NetBeansProjects\\Lab_Sesion_01\\Comparasmus\\Historiales\\grados.txt");
@@ -79,6 +103,7 @@ public class Grados {
         String gs;
         while((gs = br.readLine()) != null){
             System.out.println("["+contador+"]" + gs);
+            contador +=1 ;
             grados.add(gs);
         }
         return grados;
